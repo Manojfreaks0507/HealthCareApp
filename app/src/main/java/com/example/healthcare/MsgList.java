@@ -56,7 +56,6 @@ public class MsgList extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, smsMessagesList);
         smsListView.setAdapter(arrayAdapter);
 
-
         // Add SMS Read Permision At Runtime
         // Todo : If Permission Is Not GRANTED
         if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager.PERMISSION_GRANTED) {
@@ -106,9 +105,17 @@ public class MsgList extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog,
                                                         int which)
                                     {
-                                        DateFormat df = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
+                                        if(dbMessage.contains("FIRST NAME")&& dbMessage.contains("LAST NAME"))
+                                        {
+                                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+
                                         String date = df.format(Calendar.getInstance().getTime());
                                         myRef.child("patientdata").child(phoneNumber).child(date).setValue(dbMessage);
+                                        Toast.makeText(MsgList.this,"Uploaded Successfully",Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            Toast.makeText(MsgList.this,"This data cannot be Uploaded",Toast.LENGTH_SHORT).show();
+                                            dialog.cancel();
+                                        }
                                     }
                                 });
 
